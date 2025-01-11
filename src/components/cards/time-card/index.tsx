@@ -18,7 +18,7 @@ const TimeCard = (props: Props) => {
         <h3 className="mb-0.5">{work?.title || "Untitled"}</h3>
         <p className="text-sm text-muted-foreground">
           {format(work.startTime, "hh:mm aaa")} -{" "}
-          {format(work.endTime, "hh:mm aaa")}
+          {work.endTime ? format(work.endTime, "hh:mm aaa") : "00"}
         </p>
       </div>
 

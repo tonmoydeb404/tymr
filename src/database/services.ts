@@ -84,13 +84,16 @@ export const deleteWorkTime = async (id: string) => {
 
 export const getWorkTimesByDate = async (date: string) => {
   const db = await getDB();
-  return await db.getAllFromIndex("workTimes", "date", date);
+  const entities = await db.getAllFromIndex("workTimes", "date", date);
+
+  return entities.filter((item) => item.endTime);
 };
 
 export const getActiveWorkTime = async () => {
   const db = await getDB();
-  const allWorkTimes = await db.getAll("workTimes");
-  return allWorkTimes.find((workTime) => !workTime.endTime) ?? null;
+  const date = new Date().toLocaleDateString();
+  const entities = await db.getAllFromIndex("workTimes", "date", date);
+  return entities.find((workTime) => !workTime.endTime) ?? null;
 };
 
 export const getWorkTimeReport = async (startDate: string, endDate: string) => {

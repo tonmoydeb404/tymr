@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useApp } from "@/context/app";
 import { useEndWorkTime, useStartWorkTime } from "@/database/hooks";
+import useTimer from "@/hooks/use-timer";
 import { LucideHash, LucidePlay, LucideStopCircle } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -11,6 +12,7 @@ type Props = {};
 
 const TrackerSection = (_props: Props) => {
   const { activeWork } = useApp();
+  const workedTime = useTimer(activeWork?.startTime);
 
   const [title, setTitle] = useState("");
   const startWork = useStartWorkTime({
@@ -44,13 +46,13 @@ const TrackerSection = (_props: Props) => {
         id="title"
         type="text"
         placeholder="What are you working on?"
-        className="border-0 text-base focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-        value={activeWork?.title || title}
+        className="border-0 text-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        value={activeWork ? activeWork.title || "Untitled" : title}
         disabled={!!activeWork}
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <span>00:00</span>
+      <span>{workedTime}</span>
 
       {!activeWork ? (
         <Button

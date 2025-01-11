@@ -9,7 +9,6 @@ type Props = {};
 const RecentSection = (_props: Props) => {
   const { date } = useApp();
   const dateString = new Date(date).toLocaleDateString();
-  console.log({ dateString });
 
   const { data, isLoading, error } = useWorkTimesByDate(dateString);
   return (
