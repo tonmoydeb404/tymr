@@ -16,6 +16,19 @@
 </head>
 
 <body>
+
+  <!-- Prevent Theme Flashing -->
+  <script>
+    (function () {
+      const theme = localStorage.getItem('theme') || 'light';
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+
   <main id="root"></main>
   <script type="module" src="/src/main.tsx"></script>
 </body>

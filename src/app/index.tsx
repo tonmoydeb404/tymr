@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/context/theme";
 import { BrowserRouter } from "react-router";
 import Routes from "./routes";
 
@@ -5,9 +6,11 @@ type Props = {};
 
 const App = (_props: Props) => {
   return (
-    <BrowserRouter>
-      <Routes />
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };
 
