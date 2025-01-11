@@ -103,9 +103,16 @@ export const getActiveWorkTime = async () => {
 
 export const getWorkTimeReport = async (startDate: string, endDate: string) => {
   const db = await getDB();
-  const allWorkTimes = await db.getAll("workTimes");
-  return allWorkTimes.filter(
-    (workTime) =>
-      workTime.endTime && workTime.date >= startDate && workTime.date <= endDate
-  );
+
+  // Use a range query to get only the work times within the date range
+  const range = IDBKeyRange.bound(startDate, endDate, false, false);
+  const workTimes = await db.getAllFromIndex("workTimes", "date", range);
+
+  // Return the completed work times sorted by startTime
+  return workTimes
+    .filter((workTime) => workTime.endTime)
+    .sort(
+      (a, b) =>
+        new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
+    );
 };
