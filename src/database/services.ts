@@ -48,8 +48,6 @@ export const endWorkTime = async () => {
   todayWork.duration =
     new Date(endTime).getTime() - new Date(todayWork.startTime).getTime();
 
-  console.log({ todayWork, endTime, today });
-
   // Save the updated work time
   await db.put("workTimes", todayWork);
 
@@ -88,7 +86,12 @@ export const getWorkTimesByDate = async (date: string) => {
   const db = await getDB();
   const entities = await db.getAllFromIndex("workTimes", "date", date);
 
-  return entities.filter((item) => item.endTime);
+  return entities
+    .filter((item) => item.endTime)
+    .sort(
+      (a, b) =>
+        new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
+    );
 };
 
 export const getActiveWorkTime = async () => {
