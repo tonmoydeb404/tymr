@@ -9,7 +9,7 @@ type Props = {};
 
 const TodayStatSection = (_props: Props) => {
   return (
-    <Card className="flex-1 w-full">
+    <Card className="max-md:flex-1 w-full">
       <CardHeader className="text-sm font-semibold text-muted-foreground">
         Time Today
       </CardHeader>
