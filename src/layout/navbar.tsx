@@ -20,10 +20,11 @@ const Navbar = (_props: Props) => {
   const { toggleTheme, theme } = useTheme();
 
   return (
-    <header className="mt-10 flex gap-2.5 items-center justify-center">
+    <header className="flex gap-2.5 items-center justify-center">
       <nav className="flex flex-row gap-2.5 items-center justify-center px-9 border rounded-full shadow-sm">
         {links.map((item) => (
           <NavLink
+            key={item.path}
             to={item.path}
             className="px-4 py-4 relative overflow-hidden after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-full after:bg-primary after:-translate-x-[110%] after:duration-200 hover:after:translate-x-0 [&.active]:after:!translate-x-0 font-medium"
           >

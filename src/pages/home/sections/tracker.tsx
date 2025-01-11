@@ -1,11 +1,38 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { LucideHash, LucidePlay } from "lucide-react";
+import { useApp } from "@/context/app";
+import { useEndWorkTime, useStartWorkTime } from "@/database/hooks";
+import { LucideHash, LucidePlay, LucideStopCircle } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 type Props = {};
 
 const TrackerSection = (_props: Props) => {
+  const { activeWork } = useApp();
+
+  const [title, setTitle] = useState("");
+  const startWork = useStartWorkTime({
+    onSuccess: () => {
+      setTitle("");
+      toast.success("Time tracking started!");
+    },
+    onError: () => {
+      toast.error("Failed to start time tracking");
+    },
+  });
+
+  const endWork = useEndWorkTime({
+    onSuccess: () => {
+      setTitle("");
+      toast.success("Time tracking stopped!");
+    },
+    onError: () => {
+      toast.error("Failed to stop time tracking");
+    },
+  });
+
   return (
     <Card
       className="mx-auto mt-10 flex items-center justify-center px-4 py-4 gap-4 focus-within:border-primary duration-200"
@@ -18,13 +45,28 @@ const TrackerSection = (_props: Props) => {
         type="text"
         placeholder="What are you working on?"
         className="border-0 text-base focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        value={activeWork?.title || title}
+        disabled={!!activeWork}
+        onChange={(e) => setTitle(e.target.value)}
       />
 
       <span>00:00</span>
 
-      <Button className="!size-12 rounded-full">
-        <LucidePlay />
-      </Button>
+      {!activeWork ? (
+        <Button
+          className="!size-12 rounded-full"
+          onClick={() => startWork.trigger({ title })}
+        >
+          <LucidePlay />
+        </Button>
+      ) : (
+        <Button
+          className="!size-12 rounded-full"
+          onClick={() => endWork.trigger()}
+        >
+          <LucideStopCircle />
+        </Button>
+      )}
     </Card>
   );
 };

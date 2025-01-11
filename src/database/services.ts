@@ -1,39 +1,85 @@
 import { WorkTime } from "@/types/work-times";
+import { nanoid } from "nanoid";
 import { getDB } from ".";
 
-export const startWorkTime = async (
-  payload: Omit<WorkTime, "endTime" | "duration">
-) => {
+export const startWorkTime = async (payload: Pick<WorkTime, "title">) => {
+  const startTime = new Date().toISOString();
+  const date = new Date().toLocaleDateString();
+
   const db = await getDB();
-  await db.add("workTimes", { ...payload, endTime: "", duration: 0 });
+
+  const existingWorks = await db.getAllFromIndex("workTimes", "date", date);
+  const todayWork = existingWorks.find((work) => !work.endTime);
+
+  if (todayWork) {
+    throw new Error("Already a time tracking is running");
+  }
+
+  const data: WorkTime = {
+    ...payload,
+    endTime: null,
+    duration: 0,
+    startTime,
+    date,
+    _id: nanoid(),
+  };
+
+  await db.add("workTimes", data);
+
+  return data;
 };
 
-export const endWorkTime = async (id: number, endTime: string) => {
+export const endWorkTime = async () => {
   const db = await getDB();
-  const workTime = await db.get("workTimes", id);
-  if (workTime) {
-    workTime.endTime = endTime;
-    workTime.duration =
-      (new Date(endTime).getTime() - new Date(workTime.startTime).getTime()) /
-      3600000;
-    await db.put("workTimes", workTime);
+
+  // Find today's active work
+  const endTime = new Date().toISOString();
+  const today = new Date().toLocaleDateString();
+  const activeWork = await db.getAllFromIndex("workTimes", "date", today);
+
+  const todayWork = activeWork.find((work) => !work.endTime);
+
+  if (!todayWork) {
+    throw new Error("No active work found for today!");
   }
+
+  // Set the end time and calculate the duration
+  todayWork.endTime = endTime;
+  todayWork.duration =
+    new Date(endTime).getTime() - new Date(todayWork.startTime).getTime();
+
+  // Save the updated work time
+  await db.put("workTimes", todayWork);
+
+  return todayWork;
 };
 
 export const updateWorkTime = async (
-  id: number,
+  id: string,
   updates: Partial<WorkTime>
 ) => {
   const db = await getDB();
   const workTime = await db.get("workTimes", id);
-  if (workTime) {
-    await db.put("workTimes", { ...workTime, ...updates });
+
+  if (!workTime) {
+    throw new Error("Work history not found");
   }
+  await db.put("workTimes", { ...workTime, ...updates });
+
+  return { ...workTime, ...updates };
 };
 
-export const deleteWorkTime = async (id: number) => {
+export const deleteWorkTime = async (id: string) => {
   const db = await getDB();
+  const workTime = await db.get("workTimes", id);
+
+  if (!workTime) {
+    throw new Error("Work history not found!");
+  }
+
   await db.delete("workTimes", id);
+
+  return workTime;
 };
 
 export const getWorkTimesByDate = async (date: string) => {
@@ -44,7 +90,7 @@ export const getWorkTimesByDate = async (date: string) => {
 export const getActiveWorkTime = async () => {
   const db = await getDB();
   const allWorkTimes = await db.getAll("workTimes");
-  return allWorkTimes.find((workTime) => !workTime.endTime);
+  return allWorkTimes.find((workTime) => !workTime.endTime) ?? null;
 };
 
 export const getWorkTimeReport = async (startDate: string, endDate: string) => {

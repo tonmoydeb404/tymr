@@ -1,4 +1,5 @@
 import HeaderSection from "./sections/header";
+import RecentSection from "./sections/recent";
 import TodayStatSection from "./sections/today-stat";
 import TrackerSection from "./sections/tracker";
 import WeekStatSection from "./sections/week-stat";
@@ -18,9 +19,7 @@ const HomePage = (_props: Props) => {
         </div>
 
         <div className="col-span-9 pl-7">
-          <h2 className="text-xl font-semibold mb-7">Recent Tracks</h2>
-
-          {/* <TimeCard  /> */}
+          <RecentSection />
         </div>
       </div>
     </>
