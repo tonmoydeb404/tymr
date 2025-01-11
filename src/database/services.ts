@@ -48,6 +48,8 @@ export const endWorkTime = async () => {
   todayWork.duration =
     new Date(endTime).getTime() - new Date(todayWork.startTime).getTime();
 
+  console.log({ todayWork, endTime, today });
+
   // Save the updated work time
   await db.put("workTimes", todayWork);
 

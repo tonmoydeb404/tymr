@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/app";
+import { getGreeting } from "@/helpers/common";
 import useClock from "@/hooks/use-clock";
 import { format } from "date-fns";
 import { LucideCalendar } from "lucide-react";
@@ -11,21 +12,25 @@ const HeaderSection = (_props: Props) => {
   const time = useClock();
 
   return (
-    <header className="mt-20 flex items-center">
-      <h1 className="text-3xl font-bold">Afternoon, Tonmoy.</h1>
+    <div className="flex items-start justify-between lg:items-center gap-x-3">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:flex-1 lg:justify-between">
+        <h1 className="text-[22px] sm:text-2xl md:text-3xl font-bold">
+          {getGreeting()}, Tonmoy.
+        </h1>
 
-      <h2 className="ml-auto text-lg text-muted-foreground">
-        {format(date, "EEEE, MMMM do, yyyy")}
-      </h2>
-      {time ? (
-        <h3 className="ml-2 text-lg font-semibold">
-          {format(time, "hh:mm aaa")}
-        </h3>
-      ) : null}
-      <Button size={"icon"} className="ml-2" variant={"outline"}>
+        <div className="flex flex-col md:flex-row gap-x-3">
+          <h2 className="text-muted-foreground">
+            {format(date, "EEEE, MMMM do, yyyy")}
+          </h2>
+          {time ? (
+            <h3 className="font-semibold">{format(time, "hh:mm aaa")}</h3>
+          ) : null}
+        </div>
+      </div>
+      <Button size={"icon"} variant={"outline"}>
         <LucideCalendar />
       </Button>
-    </header>
+    </div>
   );
 };
 

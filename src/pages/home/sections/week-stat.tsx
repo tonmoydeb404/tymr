@@ -9,14 +9,12 @@ type Props = {};
 
 const WeekStatSection = (_props: Props) => {
   return (
-    <Card>
-      <CardHeader className="text-base font-semibold text-muted-foreground">
+    <Card className="flex-1 w-full">
+      <CardHeader className="text-sm font-semibold text-muted-foreground">
         This Week
       </CardHeader>
-      <CardContent className="text-5xl font-bold">43:21</CardContent>
-      <CardFooter>
-        <span>Last updated at 3:17 PM</span>
-      </CardFooter>
+      <CardContent className="text-4xl font-bold pb-2">43:21</CardContent>
+      <CardFooter className="text-xs">Last updated at 3:17 PM</CardFooter>
     </Card>
   );
 };

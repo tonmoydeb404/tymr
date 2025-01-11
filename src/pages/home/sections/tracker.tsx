@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useApp } from "@/context/app";
 import { useEndWorkTime, useStartWorkTime } from "@/database/hooks";
 import useTimer from "@/hooks/use-timer";
-import { LucideHash, LucidePlay, LucideStopCircle } from "lucide-react";
+import { LucideHash, LucidePause, LucidePlay } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -37,38 +37,48 @@ const TrackerSection = (_props: Props) => {
 
   return (
     <Card
-      className="mx-auto mt-10 flex items-center justify-center px-4 py-4 gap-4 focus-within:border-primary duration-200"
+      className="mx-auto mt-10 flex flex-col justify-center px-4 py-4 gap-x-0 sm:gap-x-4 focus-within:border-primary duration-200"
       as="label"
     >
-      <LucideHash />
-
-      <Input
-        id="title"
-        type="text"
-        placeholder="What are you working on?"
-        className="border-0 text-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-        value={activeWork ? activeWork.title || "Untitled" : title}
-        disabled={!!activeWork}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-
-      <span>{workedTime}</span>
-
-      {!activeWork ? (
-        <Button
-          className="!size-12 rounded-full"
-          onClick={() => startWork.trigger({ title })}
-        >
-          <LucidePlay />
-        </Button>
-      ) : (
-        <Button
-          className="!size-12 rounded-full"
-          onClick={() => endWork.trigger()}
-        >
-          <LucideStopCircle />
-        </Button>
+      {activeWork && (
+        <span className="sm:hidden block text-3xl mb-2 font-bold">
+          {workedTime}
+        </span>
       )}
+
+      <div className="flex items-center gap-x-2 sm:gap-x-4">
+        <LucideHash className="shrink-0 size-4" />
+
+        <Input
+          id="title"
+          type="text"
+          placeholder="What are you working on?"
+          className="border-0 px-0 sm:text-lg focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+          value={activeWork ? activeWork.title || "Untitled" : title}
+          disabled={!!activeWork}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+
+        <span className="max-sm:hidden">{workedTime}</span>
+
+        {!activeWork ? (
+          <Button
+            className=" !size-8 sm:!size-12 rounded-full"
+            variant={"secondary"}
+            onClick={() => startWork.trigger({ title })}
+          >
+            <LucidePlay className="sm:!size-5" />
+          </Button>
+        ) : (
+          <Button
+            className=" !size-8 sm:!size-12 rounded-full"
+            variant={"destructive"}
+            onClick={() => endWork.trigger()}
+          >
+            <LucidePause className="sm:!size-5" />
+          </Button>
+        )}
+      </div>
     </Card>
   );
 };

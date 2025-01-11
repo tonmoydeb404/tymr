@@ -11,14 +11,14 @@ const HomePage = (_props: Props) => {
     <>
       <HeaderSection />
       <TrackerSection />
-      <div className="mt-20 grid grid-cols-12">
-        <div className="col-span-3 flex flex-col gap-4">
+      <div className="mt-20 grid grid-cols-12 gap-y-10">
+        <div className="col-span-12 md:col-span-4 lg:col-span-3 flex flex-col sm:flex-row md:flex-col items-center gap-4">
           <TodayStatSection />
-          <div className="border w-2/5 mx-auto"></div>
+          <div className="border w-2/5 sm:w-0 sm:h-2/5 md:w-2/5 md:h-0 mx-auto sm:mx-0 md:mx-auto"></div>
           <WeekStatSection />
         </div>
 
-        <div className="col-span-9 pl-7">
+        <div className="col-span-12 md:col-span-8 lg:col-span-9 md:pl-7">
           <RecentSection />
         </div>
       </div>
