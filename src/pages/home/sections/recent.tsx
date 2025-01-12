@@ -2,7 +2,7 @@ import TimeCard from "@/components/cards/time-card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useApp } from "@/context/app";
 import { useWorkTimesByDate } from "@/database/hooks";
-import { LucideAlertCircle, LucideLoader2 } from "lucide-react";
+import { LucideAlertCircle, LucideBox, LucideLoader2 } from "lucide-react";
 
 type Props = {};
 
@@ -24,11 +24,23 @@ const RecentSection = (_props: Props) => {
       )}
 
       {!isLoading && !error && Array.isArray(data) && (
-        <div className="flex flex-col gap-5">
-          {data.map((item) => (
-            <TimeCard work={item} key={item._id} />
-          ))}
-        </div>
+        <>
+          {data.length > 0 && (
+            <div className="flex flex-col gap-5">
+              {data.map((item) => (
+                <TimeCard work={item} key={item._id} />
+              ))}
+            </div>
+          )}
+          {data.length === 0 && (
+            <div className="border border-dashed flex flex-col items-center justify-center text-center py-8">
+              <LucideBox className="stroke-muted-foreground mb-2" />
+              <AlertTitle className="text-muted-foreground text-sm">
+                Nothing tracked yet
+              </AlertTitle>
+            </div>
+          )}
+        </>
       )}
 
       {isLoading && (
