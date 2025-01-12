@@ -1,16 +1,17 @@
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { formatDuration } from "@/helpers/common";
 import { WorkTime } from "@/types/work-times";
 import { format } from "date-fns";
-import { LucideHash, LucideMoreVertical } from "lucide-react";
+import { LucideHash } from "lucide-react";
+import Actions from "./actions";
 
 type Props = {
   work: WorkTime;
+  onDelete: (data: WorkTime) => void;
 };
 
 const TimeCard = (props: Props) => {
-  const { work } = props;
+  const { work, onDelete } = props;
   return (
     <Card className="flex flex-col min-[400px]:flex-row min-[400px]:justify-between items-stretch gap-4 px-4 py-3">
       <div className="flex items-center gap-x-2">
@@ -29,9 +30,7 @@ const TimeCard = (props: Props) => {
           {formatDuration(work.duration)}
         </h4>
 
-        <Button size={"icon"} variant={"ghost"}>
-          <LucideMoreVertical />
-        </Button>
+        <Actions onDelete={() => onDelete(work)} />
       </div>
     </Card>
   );
