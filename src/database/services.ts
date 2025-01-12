@@ -1,4 +1,5 @@
 import { WorkTime } from "@/types/work-times";
+import { endOfWeek, startOfWeek, subDays } from "date-fns";
 import { nanoid } from "nanoid";
 import { getDB } from ".";
 
@@ -115,4 +116,68 @@ export const getWorkTimeReport = async (startDate: string, endDate: string) => {
       (a, b) =>
         new Date(b.startTime).getTime() - new Date(a.startTime).getTime()
     );
+};
+
+export const getWorkTimeDailyStat = async (date: string) => {
+  const db = await getDB();
+
+  // ----------------------------------------------------------------------
+
+  const workTimes = await db.getAllFromIndex("workTimes", "date", date);
+
+  const totalDuration = workTimes.reduce(
+    (sum, workTime) => sum + (workTime.endTime ? workTime.duration : 0),
+    0
+  );
+
+  // ----------------------------------------------------------------------
+
+  const prevDate = subDays(new Date(date), 1).toLocaleDateString();
+
+  const prevWorkTimes = await db.getAllFromIndex("workTimes", "date", prevDate);
+
+  const prevTotalDuration = prevWorkTimes.reduce(
+    (sum, workTime) => sum + (workTime.endTime ? workTime.duration : 0),
+    0
+  );
+
+  return { current: totalDuration, previous: prevTotalDuration };
+};
+
+export const getWorkTimeWeeklyStat = async (date: string) => {
+  const weekStart = startOfWeek(date).toLocaleDateString();
+  const weekEnd = endOfWeek(date).toLocaleDateString();
+
+  const db = await getDB();
+
+  // ----------------------------------------------------------------------
+
+  const workTimes = await db.getAllFromIndex(
+    "workTimes",
+    "date",
+    IDBKeyRange.bound(weekStart, weekEnd, false, false)
+  );
+
+  const totalDuration = workTimes.reduce(
+    (sum, workTime) => sum + (workTime.endTime ? workTime.duration : 0),
+    0
+  );
+
+  // ----------------------------------------------------------------------
+
+  const prevWeekStart = subDays(startOfWeek(date), 7).toLocaleDateString();
+  const prevWeekEnd = subDays(endOfWeek(date), 7).toLocaleDateString();
+
+  const prevWorkTimes = await db.getAllFromIndex(
+    "workTimes",
+    "date",
+    IDBKeyRange.bound(prevWeekStart, prevWeekEnd, false, false)
+  );
+
+  const prevTotalDuration = prevWorkTimes.reduce(
+    (sum, workTime) => sum + (workTime.endTime ? workTime.duration : 0),
+    0
+  );
+
+  return { current: totalDuration, previous: prevTotalDuration };
 };
