@@ -103,12 +103,28 @@ export const getActiveWorkTime = async () => {
   return entities.find((workTime) => !workTime.endTime) ?? null;
 };
 
-export const getWorkTimeReport = async (startDate: string, endDate: string) => {
+export const getWorkTimeReport = async (
+  startDate?: string,
+  endDate?: string
+) => {
   const db = await getDB();
 
-  // Use a range query to get only the work times within the date range
-  const range = IDBKeyRange.bound(startDate, endDate, false, false);
-  const workTimes = await db.getAllFromIndex("workTimes", "date", range);
+  let workTimes;
+
+  if (startDate || endDate) {
+    // Use a range query based on provided dates
+    const range =
+      startDate && endDate
+        ? IDBKeyRange.bound(startDate, endDate, false, false)
+        : startDate
+        ? IDBKeyRange.lowerBound(startDate, false)
+        : IDBKeyRange.upperBound(endDate, false);
+
+    workTimes = await db.getAllFromIndex("workTimes", "date", range);
+  } else {
+    // No date range provided, fetch all work times
+    workTimes = await db.getAllFromIndex("workTimes", "date");
+  }
 
   // Return the completed work times sorted by startTime
   return workTimes

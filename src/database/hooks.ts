@@ -23,8 +23,8 @@ export const useActiveWorkTime = () => {
   return useSWR<WorkTime | null>("activeWorkTime", getActiveWorkTime);
 };
 
-export const useWorkTimeReport = (startDate: string, endDate: string) => {
-  return useSWR(["workTimeReport", startDate, endDate], () =>
+export const useWorkTimeReport = (startDate?: string, endDate?: string) => {
+  return useSWR(["workTimeReport", startDate || null, endDate || null], () =>
     getWorkTimeReport(startDate, endDate)
   );
 };
