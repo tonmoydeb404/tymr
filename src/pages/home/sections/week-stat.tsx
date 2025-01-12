@@ -22,7 +22,9 @@ const WeekStatSection = (_props: Props) => {
       <CardContent className="text-4xl font-bold pb-2">
         {formatDuration(data?.current || 0)}
       </CardContent>
-      <CardFooter className="text-xs">Last updated at 3:17 PM</CardFooter>
+      <CardFooter className="text-xs text-muted-foreground">
+        Previous Week: {formatDuration(data?.previous || 0)}
+      </CardFooter>
     </Card>
   );
 };
