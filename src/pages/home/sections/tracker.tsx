@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useApp } from "@/context/app";
 import { useEndWorkTime, useStartWorkTime } from "@/database/hooks";
 import useTimer from "@/hooks/use-timer";
+import { cn } from "@/lib/utils";
 import { LucideHash, LucidePause, LucidePlay } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -37,7 +38,7 @@ const TrackerSection = (_props: Props) => {
 
   return (
     <Card
-      className="mx-auto mt-10 flex flex-col justify-center px-4 py-4 gap-x-0 sm:gap-x-4 focus-within:border-primary duration-200"
+      className="mx-auto mt-10 flex flex-col justify-center px-4 py-3 gap-x-0 sm:gap-x-4 focus-within:border-primary focus-within:duration-200"
       as="label"
     >
       {activeWork && (
@@ -59,7 +60,14 @@ const TrackerSection = (_props: Props) => {
           onChange={(e) => setTitle(e.target.value)}
         />
 
-        <span className="max-sm:hidden">{workedTime}</span>
+        <span
+          className={cn(
+            "max-sm:hidden duration-200",
+            activeWork ? "text-xl font-semibold" : ""
+          )}
+        >
+          {workedTime}
+        </span>
 
         {!activeWork ? (
           <Button
