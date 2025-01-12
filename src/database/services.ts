@@ -1,3 +1,4 @@
+import { getDateString } from "@/helpers/work-time";
 import { WorkTime } from "@/types/work-times";
 import { endOfWeek, startOfWeek, subDays } from "date-fns";
 import { nanoid } from "nanoid";
@@ -5,7 +6,7 @@ import { getDB } from ".";
 
 export const startWorkTime = async (payload: Pick<WorkTime, "title">) => {
   const startTime = new Date().toISOString();
-  const date = new Date().toLocaleDateString();
+  const date = getDateString(new Date());
 
   const db = await getDB();
 
@@ -35,7 +36,7 @@ export const endWorkTime = async () => {
 
   // Find today's active work
   const endTime = new Date().toISOString();
-  const today = new Date().toLocaleDateString();
+  const today = getDateString(new Date());
   const activeWork = await db.getAllFromIndex("workTimes", "date", today);
 
   const todayWork = activeWork.find((work) => !work.endTime);
@@ -97,7 +98,7 @@ export const getWorkTimesByDate = async (date: string) => {
 
 export const getActiveWorkTime = async () => {
   const db = await getDB();
-  const date = new Date().toLocaleDateString();
+  const date = getDateString(new Date());
   const entities = await db.getAllFromIndex("workTimes", "date", date);
   return entities.find((workTime) => !workTime.endTime) ?? null;
 };
@@ -132,7 +133,7 @@ export const getWorkTimeDailyStat = async (date: string) => {
 
   // ----------------------------------------------------------------------
 
-  const prevDate = subDays(new Date(date), 1).toLocaleDateString();
+  const prevDate = getDateString(subDays(new Date(date), 1));
 
   const prevWorkTimes = await db.getAllFromIndex("workTimes", "date", prevDate);
 
@@ -145,8 +146,8 @@ export const getWorkTimeDailyStat = async (date: string) => {
 };
 
 export const getWorkTimeWeeklyStat = async (date: string) => {
-  const weekStart = startOfWeek(date).toLocaleDateString();
-  const weekEnd = endOfWeek(date).toLocaleDateString();
+  const weekStart = getDateString(startOfWeek(date));
+  const weekEnd = getDateString(endOfWeek(date));
 
   const db = await getDB();
 
@@ -165,8 +166,8 @@ export const getWorkTimeWeeklyStat = async (date: string) => {
 
   // ----------------------------------------------------------------------
 
-  const prevWeekStart = subDays(startOfWeek(date), 7).toLocaleDateString();
-  const prevWeekEnd = subDays(endOfWeek(date), 7).toLocaleDateString();
+  const prevWeekStart = getDateString(subDays(startOfWeek(date), 7));
+  const prevWeekEnd = getDateString(subDays(endOfWeek(date), 7));
 
   const prevWorkTimes = await db.getAllFromIndex(
     "workTimes",

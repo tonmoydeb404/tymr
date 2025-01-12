@@ -7,12 +7,13 @@ import {
 import { useApp } from "@/context/app";
 import { useWorkTimeWeeklyStats } from "@/database/hooks";
 import { formatDuration } from "@/helpers/common";
+import { getDateString } from "@/helpers/work-time";
 
 type Props = {};
 
 const WeekStatSection = (_props: Props) => {
   const { date } = useApp();
-  const { data } = useWorkTimeWeeklyStats(new Date(date).toLocaleDateString());
+  const { data } = useWorkTimeWeeklyStats(getDateString(new Date(date)));
 
   return (
     <Card className="max-md:flex-1 w-full">

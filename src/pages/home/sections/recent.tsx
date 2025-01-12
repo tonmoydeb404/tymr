@@ -2,13 +2,14 @@ import TimeCard from "@/components/cards/time-card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useApp } from "@/context/app";
 import { useWorkTimesByDate } from "@/database/hooks";
+import { getDateString } from "@/helpers/work-time";
 import { LucideAlertCircle, LucideBox, LucideLoader2 } from "lucide-react";
 
 type Props = {};
 
 const RecentSection = (_props: Props) => {
   const { date } = useApp();
-  const dateString = new Date(date).toLocaleDateString();
+  const dateString = getDateString(new Date(date));
 
   const { data, isLoading, error } = useWorkTimesByDate(dateString);
   return (
