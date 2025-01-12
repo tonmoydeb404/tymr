@@ -1,4 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useApp } from "@/context/app";
 import { getGreeting } from "@/helpers/common";
 import useClock from "@/hooks/use-clock";
@@ -8,7 +14,7 @@ import { LucideCalendar } from "lucide-react";
 type Props = {};
 
 const HeaderSection = (_props: Props) => {
-  const { date } = useApp();
+  const { date, setDate } = useApp();
   const time = useClock();
 
   return (
@@ -27,9 +33,20 @@ const HeaderSection = (_props: Props) => {
           ) : null}
         </div>
       </div>
-      <Button size={"icon"} variant={"outline"}>
-        <LucideCalendar />
-      </Button>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button size={"icon"} variant={"outline"}>
+            <LucideCalendar />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="p-0">
+          <Calendar
+            mode="single"
+            selected={new Date(date)}
+            onSelect={(d) => (d ? setDate(d.toISOString()) : {})}
+          />
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

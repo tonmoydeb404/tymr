@@ -1,6 +1,6 @@
 import { useActiveWorkTime } from "@/database/hooks";
 import { parseISO } from "date-fns";
-import { ReactNode, useMemo, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import { AppContext, IAppContext, values } from "./context";
 
 type Props = {
@@ -13,12 +13,14 @@ export const AppProvider = (props: Props) => {
   const [date, setDate] = useState(values.date);
   const activeResponse = useActiveWorkTime();
 
-  const updateDate = (isoDate: string) => {
+  console.log({ date });
+
+  const updateDate = useCallback((isoDate: string) => {
     const date = parseISO(isoDate);
     if (date) {
       setDate(date.toISOString());
     }
-  };
+  }, []);
 
   const activeWork = useMemo(() => {
     if (!activeResponse.data) return null;
@@ -28,11 +30,14 @@ export const AppProvider = (props: Props) => {
     return activeResponse.data;
   }, [activeResponse?.data]);
 
-  const value: IAppContext = {
-    activeWork,
-    date,
-    setDate: updateDate,
-  };
+  const value: IAppContext = useMemo(
+    () => ({
+      activeWork,
+      date,
+      setDate: updateDate,
+    }),
+    [activeWork, date, updateDate]
+  );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
