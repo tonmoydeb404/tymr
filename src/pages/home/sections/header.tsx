@@ -42,8 +42,8 @@ const HeaderSection = (_props: Props) => {
         <PopoverContent className="p-0">
           <Calendar
             mode="single"
-            selected={new Date(date)}
-            onSelect={(d) => (d ? setDate(d.toISOString()) : {})}
+            selected={date}
+            onSelect={(d) => (d ? setDate(d) : {})}
           />
         </PopoverContent>
       </Popover>

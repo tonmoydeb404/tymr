@@ -13,7 +13,7 @@ type Props = {};
 
 const TodayStatSection = (_props: Props) => {
   const { date } = useApp();
-  const { data } = useWorkTimeDailyStats(getDateString(new Date(date)));
+  const { data } = useWorkTimeDailyStats(getDateString(date));
 
   return (
     <Card className="max-md:flex-1 w-full">

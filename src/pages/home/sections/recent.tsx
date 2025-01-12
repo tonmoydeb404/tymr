@@ -13,7 +13,7 @@ const RecentSection = (_props: Props) => {
   const { date } = useApp();
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const dateString = getDateString(new Date(date));
+  const dateString = getDateString(date);
 
   const { data, isLoading, error } = useWorkTimesByDate(dateString);
   return (

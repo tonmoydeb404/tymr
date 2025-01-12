@@ -2,15 +2,15 @@ import { WorkTime } from "@/types/work-times";
 import { createContext } from "react";
 
 export interface IAppContext {
-  date: string;
-  setDate: (date: string) => void;
+  date: Date;
+  setDate: (date: Date) => void;
   activeWork: WorkTime | null;
 }
 
 export const values: IAppContext = {
   activeWork: null,
   setDate: () => {},
-  date: new Date().toISOString(),
+  date: new Date(),
 };
 
 export const AppContext = createContext(values);

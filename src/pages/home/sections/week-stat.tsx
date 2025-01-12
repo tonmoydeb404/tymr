@@ -13,7 +13,7 @@ type Props = {};
 
 const WeekStatSection = (_props: Props) => {
   const { date } = useApp();
-  const { data } = useWorkTimeWeeklyStats(getDateString(new Date(date)));
+  const { data } = useWorkTimeWeeklyStats(getDateString(date));
 
   return (
     <Card className="max-md:flex-1 w-full">
