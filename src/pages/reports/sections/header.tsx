@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { LucideCalendar } from "lucide-react";
+import { LucideCalendar, LucidePrinter } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
 type Props = {
@@ -18,17 +18,18 @@ type Props = {
 const HeaderSection = (props: Props) => {
   const { date, setDate } = props;
   return (
-    <div className="mb-10 flex items-center justify-between flex-wrap gap-2">
-      <h2 className="font-bold">Work History</h2>
+    <div className="mb-10 flex items-center flex-wrap gap-2">
+      <h2 className="font-bold mr-auto">Work History</h2>
 
       <Popover>
         <PopoverTrigger asChild>
           <Button
+            size={"sm"}
             id="date"
             variant={"outline"}
             className={cn(
               "max-w-[250px] w-full justify-start text-left font-normal overflow-hidden",
-              !date && "text-muted-foreground"
+              !date && "text-muted-foreground print:hidden"
             )}
           >
             <LucideCalendar />
@@ -57,6 +58,10 @@ const HeaderSection = (props: Props) => {
           />
         </PopoverContent>
       </Popover>
+
+      <Button size={"sm"} onClick={window.print} className="print:hidden">
+        Print <LucidePrinter />
+      </Button>
     </div>
   );
 };

@@ -20,7 +20,7 @@ const Navbar = (_props: Props) => {
   const { toggleTheme, theme } = useTheme();
 
   return (
-    <header className="flex gap-2.5 items-center justify-center fixed w-full left-0 max-md:bottom-8 md:top-8 z-10">
+    <header className="flex gap-2.5 items-center justify-center fixed w-full left-0 max-md:bottom-8 md:top-8 z-10 print:hidden">
       <nav className="flex flex-row gap-2.5 items-center justify-center px-3 md:px-6 border rounded-full shadow-sm bg-background/10 backdrop-blur">
         {links.map((item) => (
           <NavLink
