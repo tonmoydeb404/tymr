@@ -67,7 +67,9 @@ const TableSection = (props: Props) => {
                   )}
                 </Button>
               </TableCell>
-              <TableCell className="font-medium">{item.date}</TableCell>
+              <TableCell className="font-medium whitespace-nowrap">
+                {item.date}
+              </TableCell>
               <TableCell>{item.works.length}</TableCell>
               <TableCell className="text-right">
                 {formatDuration(item.duration)}
@@ -86,7 +88,7 @@ const TableSection = (props: Props) => {
                     </TableHeader>
                     <TableBody>
                       {item.works.map((work) => (
-                        <TableRow>
+                        <TableRow key={work._id}>
                           <TableCell>{work.title || "Untitled"}</TableCell>
                           <TableCell>
                             {format(work.startTime, "hh:mm aaa")} -{" "}
