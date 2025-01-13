@@ -1,6 +1,8 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useApp } from "@/context/app";
 import { useWorkTimeReport } from "@/database/hooks";
 import { getDateString } from "@/helpers/work-time";
+import { endOfMonth, startOfMonth } from "date-fns";
 import { LucideAlertCircle, LucideBox, LucideLoader2 } from "lucide-react";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
@@ -10,7 +12,12 @@ import TableSection from "./sections/table";
 type Props = {};
 
 const ReportsPage = (_props: Props) => {
-  const [range, setRange] = useState<DateRange | undefined>(undefined);
+  const { date } = useApp();
+
+  const [range, setRange] = useState<DateRange | undefined>({
+    from: startOfMonth(date),
+    to: endOfMonth(date),
+  });
   const { data, isLoading, error } = useWorkTimeReport(
     range?.from ? getDateString(range?.from) : undefined,
     range?.to ? getDateString(range?.to) : undefined

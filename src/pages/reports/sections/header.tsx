@@ -18,7 +18,7 @@ type Props = {
 const HeaderSection = (props: Props) => {
   const { date, setDate } = props;
   return (
-    <div className="mb-10 flex items-center justify-between">
+    <div className="mb-10 flex items-center justify-between flex-wrap gap-2">
       <h2 className="font-bold">Work History</h2>
 
       <Popover>
@@ -27,7 +27,7 @@ const HeaderSection = (props: Props) => {
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[250px] justify-start text-left font-normal",
+              "max-w-[250px] w-full justify-start text-left font-normal overflow-hidden",
               !date && "text-muted-foreground"
             )}
           >
