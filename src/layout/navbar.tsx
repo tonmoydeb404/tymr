@@ -20,7 +20,7 @@ const Navbar = (_props: Props) => {
   const { toggleTheme, theme } = useTheme();
 
   return (
-    <header className="flex gap-2.5 items-center justify-center fixed w-full left-0 max-md:bottom-8 md:top-8 z-10 print:hidden">
+    <header className="flex gap-2.5 items-center justify-center fixed left-1/2 -translate-x-1/2 max-md:bottom-8 md:top-8 z-[1000] print:hidden">
       <nav className="flex flex-row gap-2.5 items-center justify-center px-3 md:px-6 border rounded-full shadow-sm bg-background/10 backdrop-blur">
         {links.map((item) => (
           <NavLink
@@ -38,7 +38,7 @@ const Navbar = (_props: Props) => {
       <Button
         onClick={toggleTheme}
         variant={"outline"}
-        className="rounded-full size-10 md:size-[42px] max-md:[&_svg]:size-5 !bg-background/10 backdrop-blur"
+        className="rounded-full size-[38px] md:size-[42px] max-md:[&_svg]:size-5 !bg-background/10 backdrop-blur"
       >
         {theme === "dark" ? <LucideSun /> : <LucideMoon />}
       </Button>
