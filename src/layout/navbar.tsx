@@ -1,13 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/context/theme";
 import { paths } from "@/router/paths";
-import {
-  LucideChartNoAxesCombined,
-  LucideHome,
-  LucideMoon,
-  LucideSun,
-  LucideTable2,
-} from "lucide-react";
+import { LucideHome, LucideMoon, LucideSun, LucideTable2 } from "lucide-react";
 import { NavLink } from "react-router";
 
 // ----------------------------------------------------------------------
@@ -15,7 +9,7 @@ import { NavLink } from "react-router";
 const links = [
   { label: "Home", path: paths.root, icon: LucideHome },
   { label: "Reports", path: paths.reports, icon: LucideTable2 },
-  { label: "Stats", path: paths.stats, icon: LucideChartNoAxesCombined },
+  // { label: "Stats", path: paths.stats, icon: LucideChartNoAxesCombined }, // TODO: Future Implementation
 ];
 
 // ----------------------------------------------------------------------
