@@ -15,7 +15,7 @@ type Props = {};
 
 const HeaderSection = (_props: Props) => {
   const { date, setDate, activeWork } = useApp();
-  const time = useClock();
+  console.count("Hello");
 
   return (
     <div className="flex items-start justify-between lg:items-center gap-x-3">
@@ -23,15 +23,7 @@ const HeaderSection = (_props: Props) => {
         <h1 className="text-[22px] sm:text-2xl md:text-3xl font-bold">
           {getGreeting()}.
         </h1>
-
-        <div className="flex flex-col md:flex-row gap-x-3">
-          <h2 className="text-muted-foreground">
-            {format(date, "EEEE, MMMM do, yyyy")}
-          </h2>
-          {time ? (
-            <h3 className="font-semibold">{format(time, "hh:mm aaa")}</h3>
-          ) : null}
-        </div>
+        <Clock />
       </div>
       <Popover>
         <PopoverTrigger asChild disabled={!!activeWork}>
@@ -44,6 +36,7 @@ const HeaderSection = (_props: Props) => {
             mode="single"
             selected={date}
             onSelect={(d) => (d ? setDate(d) : {})}
+            toDate={new Date()}
           />
         </PopoverContent>
       </Popover>
@@ -52,3 +45,21 @@ const HeaderSection = (_props: Props) => {
 };
 
 export default HeaderSection;
+
+// ----------------------------------------------------------------------
+
+const Clock = () => {
+  const { date } = useApp();
+  const time = useClock();
+
+  return (
+    <div className="flex flex-col md:flex-row gap-x-3">
+      <h2 className="text-muted-foreground">
+        {format(date, "EEEE, MMMM do, yyyy")}
+      </h2>
+      {time ? (
+        <h3 className="font-semibold">{format(time, "hh:mm aaa")}</h3>
+      ) : null}
+    </div>
+  );
+};
