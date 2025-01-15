@@ -10,7 +10,7 @@ export const startWorkTime = async (payload: Pick<WorkTime, "title">) => {
 
   const db = await getDB();
 
-  const activeWorks = await db.getAllFromIndex("workTimes", "endTime", null);
+  const activeWorks = await db.getAllFromIndex("workTimes", "endTime", "");
 
   if (activeWorks.length > 0) {
     throw new Error("Already a time tracking is running");
@@ -18,7 +18,7 @@ export const startWorkTime = async (payload: Pick<WorkTime, "title">) => {
 
   const data: WorkTime = {
     ...payload,
-    endTime: null,
+    endTime: "",
     duration: 0,
     startTime,
     date,
@@ -35,7 +35,7 @@ export const endWorkTime = async () => {
 
   // Find active work
   const endTime = new Date().toISOString();
-  const works = await db.getAllFromIndex("workTimes", "endTime", null);
+  const works = await db.getAllFromIndex("workTimes", "endTime", "");
   const work = works[0];
 
   if (!work) {
@@ -95,7 +95,7 @@ export const getWorkTimesByDate = async (date: string) => {
 
 export const getActiveWorkTime = async () => {
   const db = await getDB();
-  const works = await db.getAllFromIndex("workTimes", "endTime", null);
+  const works = await db.getAllFromIndex("workTimes", "endTime", "");
   const work = works[0];
   return work;
 };

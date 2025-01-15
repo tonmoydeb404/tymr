@@ -15,7 +15,6 @@ type Props = {};
 
 const HeaderSection = (_props: Props) => {
   const { date, setDate, activeWork } = useApp();
-  console.count("Hello");
 
   return (
     <div className="flex items-start justify-between lg:items-center gap-x-3">
