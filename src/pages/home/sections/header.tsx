@@ -14,7 +14,7 @@ import { LucideCalendar } from "lucide-react";
 type Props = {};
 
 const HeaderSection = (_props: Props) => {
-  const { date, setDate } = useApp();
+  const { date, setDate, activeWork } = useApp();
   const time = useClock();
 
   return (
@@ -34,7 +34,7 @@ const HeaderSection = (_props: Props) => {
         </div>
       </div>
       <Popover>
-        <PopoverTrigger asChild>
+        <PopoverTrigger asChild disabled={!!activeWork}>
           <Button size={"icon"} variant={"outline"}>
             <LucideCalendar />
           </Button>
