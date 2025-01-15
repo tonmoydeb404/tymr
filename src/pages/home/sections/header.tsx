@@ -21,7 +21,7 @@ const HeaderSection = (_props: Props) => {
     <div className="flex items-start justify-between lg:items-center gap-x-3">
       <div className="flex flex-col lg:flex-row lg:items-center lg:flex-1 lg:justify-between">
         <h1 className="text-[22px] sm:text-2xl md:text-3xl font-bold">
-          {getGreeting()}, Tonmoy.
+          {getGreeting()}.
         </h1>
 
         <div className="flex flex-col md:flex-row gap-x-3">
