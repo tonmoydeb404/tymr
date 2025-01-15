@@ -7,7 +7,7 @@ const Card = React.forwardRef<
   HTMLElement,
   React.HTMLAttributes<HTMLElement> & { as?: HTMLElementType }
 >(({ className, as = "article", ...props }, ref) =>
-  React.createElement("", {
+  React.createElement(as, {
     ref,
     className: cn(
       "rounded-lg border bg-card text-card-foreground shadow-sm",
