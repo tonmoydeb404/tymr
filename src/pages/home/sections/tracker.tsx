@@ -37,7 +37,7 @@ const TrackerSection = (_props: Props) => {
     },
   });
 
-  if (!isToday(date)) {
+  if (!activeWork && !isToday(date)) {
     return null;
   }
 
