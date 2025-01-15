@@ -5,6 +5,7 @@ import { useApp } from "@/context/app";
 import { useEndWorkTime, useStartWorkTime } from "@/database/hooks";
 import useTimer from "@/hooks/use-timer";
 import { cn } from "@/lib/utils";
+import { isToday } from "date-fns";
 import { LucideHash, LucidePause, LucidePlay } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -12,7 +13,7 @@ import { toast } from "sonner";
 type Props = {};
 
 const TrackerSection = (_props: Props) => {
-  const { activeWork } = useApp();
+  const { activeWork, date } = useApp();
   const workedTime = useTimer(activeWork?.startTime);
 
   const [title, setTitle] = useState("");
@@ -35,6 +36,10 @@ const TrackerSection = (_props: Props) => {
       toast.error("Failed to stop time tracking");
     },
   });
+
+  if (!isToday(date)) {
+    return null;
+  }
 
   return (
     <Card
