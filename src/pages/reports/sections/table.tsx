@@ -3,15 +3,16 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { formatDuration } from "@/helpers/common";
 import { WorkTime } from "@/types/work-times";
-import { format } from "date-fns";
 import { LucideChevronDown, LucideChevronRight } from "lucide-react";
 import { Fragment, useMemo, useState } from "react";
+import ChildTable from "./child-table";
 
 type Props = {
   data: WorkTime[];
@@ -76,39 +77,27 @@ const TableSection = (props: Props) => {
               </TableCell>
             </TableRow>
             {item.works.length > 0 && openRow === item.date && (
-              <TableRow>
+              <TableRow className="hover:bg-transparent">
                 <TableCell colSpan={4}>
-                  <Table className="border">
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Title</TableHead>
-                        <TableHead>Time</TableHead>
-                        <TableHead className="text-right">Hours</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {item.works.map((work) => (
-                        <TableRow key={work._id}>
-                          <TableCell>{work.title || "Untitled"}</TableCell>
-                          <TableCell>
-                            {format(work.startTime, "hh:mm aaa")} -{" "}
-                            {work.endTime
-                              ? format(work.endTime, "hh:mm aaa")
-                              : "00"}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {formatDuration(work.duration)}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                  <ChildTable data={item.works} />
                 </TableCell>
               </TableRow>
             )}
           </Fragment>
         ))}
       </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TableCell colSpan={3} className="font-medium">
+            Total Hours:
+          </TableCell>
+          <TableCell className="text-right">
+            {formatDuration(
+              modifiedData.reduce((acc, item) => acc + item.duration, 0)
+            )}
+          </TableCell>
+        </TableRow>
+      </TableFooter>
     </Table>
   );
 };
