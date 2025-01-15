@@ -1,7 +1,7 @@
 import { WorkTime } from "@/types/work-times";
 import { DBSchema, openDB } from "idb";
 
-const DB_NAME = "workTimeDB";
+const DB_NAME = "TYMRDB";
 const STORE_NAME = "workTimes";
 
 interface DB extends DBSchema {
