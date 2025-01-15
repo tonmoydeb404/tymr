@@ -10,10 +10,9 @@ export const startWorkTime = async (payload: Pick<WorkTime, "title">) => {
 
   const db = await getDB();
 
-  const existingWorks = await db.getAllFromIndex("workTimes", "date", date);
-  const todayWork = existingWorks.find((work) => !work.endTime);
+  const activeWorks = await db.getAllFromIndex("workTimes", "endTime", null);
 
-  if (todayWork) {
+  if (activeWorks.length > 0) {
     throw new Error("Already a time tracking is running");
   }
 
@@ -34,26 +33,24 @@ export const startWorkTime = async (payload: Pick<WorkTime, "title">) => {
 export const endWorkTime = async () => {
   const db = await getDB();
 
-  // Find today's active work
+  // Find active work
   const endTime = new Date().toISOString();
-  const today = getDateString(new Date());
-  const activeWork = await db.getAllFromIndex("workTimes", "date", today);
+  const works = await db.getAllFromIndex("workTimes", "endTime", null);
+  const work = works[0];
 
-  const todayWork = activeWork.find((work) => !work.endTime);
-
-  if (!todayWork) {
-    throw new Error("No active work found for today!");
+  if (!work) {
+    throw new Error("No active work found!");
   }
 
   // Set the end time and calculate the duration
-  todayWork.endTime = endTime;
-  todayWork.duration =
-    new Date(endTime).getTime() - new Date(todayWork.startTime).getTime();
+  work.endTime = endTime;
+  work.duration =
+    new Date(endTime).getTime() - new Date(work.startTime).getTime();
 
   // Save the updated work time
-  await db.put("workTimes", todayWork);
+  await db.put("workTimes", work);
 
-  return todayWork;
+  return work;
 };
 
 export const updateWorkTime = async (
@@ -98,9 +95,9 @@ export const getWorkTimesByDate = async (date: string) => {
 
 export const getActiveWorkTime = async () => {
   const db = await getDB();
-  const date = getDateString(new Date());
-  const entities = await db.getAllFromIndex("workTimes", "date", date);
-  return entities.find((workTime) => !workTime.endTime) ?? null;
+  const works = await db.getAllFromIndex("workTimes", "endTime", null);
+  const work = works[0];
+  return work;
 };
 
 export const getWorkTimeReport = async (
