@@ -10,7 +10,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    VitePWA({ registerType: "autoUpdate", devOptions: { enabled: true } }),
+    VitePWA({ registerType: "autoUpdate", devOptions: { enabled: false } }),
   ],
   resolve: {
     alias: {
