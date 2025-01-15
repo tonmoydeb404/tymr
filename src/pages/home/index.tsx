@@ -9,6 +9,7 @@ type Props = {};
 const HomePage = (_props: Props) => {
   return (
     <>
+      <title>Home - Tymr</title>
       <HeaderSection />
       <TrackerSection />
       <div className="mt-10 grid grid-cols-12 gap-y-10">

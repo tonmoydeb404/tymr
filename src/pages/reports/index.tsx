@@ -24,6 +24,7 @@ const ReportsPage = (_props: Props) => {
   );
   return (
     <>
+      <title>Reports - Tymr</title>
       <HeaderSection date={range} setDate={setRange} />
 
       {!isLoading && error && (

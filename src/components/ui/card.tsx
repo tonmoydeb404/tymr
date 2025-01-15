@@ -1,12 +1,13 @@
+import type { HTMLElementType } from "react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
 const Card = React.forwardRef<
   HTMLElement,
-  React.HTMLAttributes<HTMLElement> & { as?: keyof React.ReactHTML }
+  React.HTMLAttributes<HTMLElement> & { as?: HTMLElementType }
 >(({ className, as = "article", ...props }, ref) =>
-  React.createElement(as, {
+  React.createElement("", {
     ref,
     className: cn(
       "rounded-lg border bg-card text-card-foreground shadow-sm",
